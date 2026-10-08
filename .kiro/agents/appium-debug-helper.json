@@ -1,0 +1,72 @@
+{
+  "name": "appium-debug-helper",
+  "description": "Analyzes Appium test logs and HTML reports to diagnose failures — identifies changed element IDs, stale locators, timing issues, and app changes — then fixes the affected screen files.",
+  "prompt": "file://../agent-prompts/appium-debug-helper/appium-debug-helper-prompt.md",
+  "includeMcpJson": true,
+  "tools": [
+    "read",
+    "glob",
+    "grep",
+    "write",
+    "shell",
+    "code",
+    "todo",
+    "introspect",
+    "mcp",
+    "@atlassian"
+  ],
+  "allowedTools": [
+    "read",
+    "glob",
+    "grep",
+    "code",
+    "todo",
+    "introspect",
+    "mcp",
+    "@atlassian"
+  ],
+  "toolsSettings": {
+    "write": {
+      "allowedPaths": [
+        "src/main/kotlin/**",
+        "src/test/kotlin/**",
+        "src/test/resources/**",
+        "src/main/resources/**"
+      ],
+      "deniedPaths": [
+        ".git/**",
+        ".kiro/agents/**",
+        ".kiro/settings/**"
+      ]
+    },
+    "shell": {
+      "allowedCommands": [
+        "git status",
+        "git diff.*",
+        "git log.*",
+        "git show.*",
+        "git grep.*",
+        "ls.*",
+        "find.*",
+        "cat.*",
+        "head.*",
+        "tail.*"
+      ],
+      "deniedCommands": [
+        "git commit.*",
+        "git push.*",
+        "git reset --hard.*",
+        "git clean -fd.*",
+        "rm -rf.*"
+      ],
+      "autoAllowReadonly": true
+    }
+  },
+  "resources": [
+    "file://README.md",
+    "file://.kiro/steering/**/*.md",
+    "file://src/**/*.kt",
+    "skill://.kiro/skills/**/SKILL.md"
+  ],
+  "welcomeMessage": "Appium Debug Helper ready. Share the test report, log file path, or paste the error — I'll find the broken locators, changed IDs, or timing issues and fix the screen files."
+}

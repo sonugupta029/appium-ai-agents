@@ -1,0 +1,28 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Kiro CLI — runtime files (do not commit)
+.kiro/sessions/
+.kiro/logs/
+.kiro/registry-cache/
+.kiro/settings/
+.kiro/agent-steering/
+.kiro/session-index/
+.kiro/powers/
+.kiro/extensions/
+.kiro/bin/
+.kiro/scripts/
+.kiro/steering/
+.kiro/.cli_bash_history
+.kiro/*.lock
+.kiro/argv.json
+
+# Secrets
+**/.env
+**/.env.*
+**/*.pem
+**/*.key
+**/id_rsa*
+**/*credentials*

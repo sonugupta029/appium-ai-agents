@@ -1,0 +1,97 @@
+{
+  "name": "mobile-automation-engineer",
+  "description": "Generates Appium Page Object Models (POMs) and test scripts for mobile apps by analyzing existing Kotlin code patterns.",
+  "prompt": "file://../agent-prompts/mobile-automation-engineer/mobile-automation-engineer.md",
+  "includeMcpJson": true,
+  "tools": [
+    "read",
+    "glob",
+    "grep",
+    "write",
+    "shell",
+    "code",
+    "todo",
+    "introspect",
+    "mcp",
+    "@atlassian",
+    "@gitlab",
+    "@Figma"
+  ],
+  "allowedTools": [
+    "read",
+    "glob",
+    "grep",
+    "code",
+    "todo",
+    "introspect",
+    "mcp",
+    "@atlassian",
+    "@gitlab",
+    "@Figma"
+  ],
+  "toolsSettings": {
+    "read": {
+      "allowedPaths": [
+        ".kiro/**",
+        "**/*"
+      ],
+      "deniedPaths": [
+        "**/.env",
+        "**/.env.*",
+        "**/*.pem",
+        "**/*.key",
+        "**/id_rsa*",
+        "**/*credentials*",
+        "~/.ssh/**",
+        "~/.aws/**"
+      ]
+    },
+    "write": {
+      "allowedPaths": [
+        "**/screens/**/*.kt",
+        "**/reusables/**/*.kt",
+        "**/tests/**/*.kt",
+        "**/resources/*.xml",
+        "**/resources/*.json",
+        ".kiro/agents/mobile-automation-engineer.json",
+        ".kiro/agent-prompts/mobile-automation-engineer/**"
+      ],
+      "deniedPaths": [
+        ".git/**",
+        ".kiro/settings/**",
+        "**/.env",
+        "**/.env.*",
+        "**/*.pem",
+        "**/*.key"
+      ]
+    },
+    "shell": {
+      "allowedCommands": [
+        "git status",
+        "git diff.*",
+        "git log.*",
+        "git show.*",
+        "git grep.*",
+        "./gradlew test.*",
+        "./gradlew clean.*"
+      ],
+      "deniedCommands": [
+        "git commit.*",
+        "git push.*",
+        "git reset --hard.*",
+        "rm -rf.*"
+      ],
+      "autoAllowReadonly": true
+    }
+  },
+  "resources": [
+    "file://README.md",
+    "file://build.gradle.kts",
+    "file://src/main/kotlin/com/appium/screens/**/*.kt",
+    "file://src/main/kotlin/com/appium/reusables/**/*.kt",
+    "file://src/test/resources/ValidationData.json",
+    "file://src/test/resources/testng.xml",
+    "skill://.kiro/skills/**/SKILL.md"
+  ],
+  "welcomeMessage": "Mobile Automation Engineer ready. Tell me the screen name and element IDs (or share Appium Inspector output) and I'll generate the POM following your existing patterns."
+}
