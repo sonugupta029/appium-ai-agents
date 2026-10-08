@@ -2,6 +2,8 @@
 
 A reference implementation of two AI agents for mobile test automation, built for the [Kiro CLI](https://kiro.dev).
 
+📖 **Read the write-up:** [AI Agents for Appium: How I Built Guardrails That Actually Work](https://sonu-gupta.medium.com/ai-agents-for-appium-how-i-built-guardrails-that-actually-work-1a8c6ffb7081)
+
 ---
 
 ## Agents
