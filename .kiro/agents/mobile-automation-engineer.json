@@ -45,18 +45,24 @@
         "**/.env",
         "**/.env.*",
         "**/*.pem",
-        "**/*.key"
+        "**/*.key",
+        "**/build.gradle.kts",
+        "**/build.gradle",
+        "**/.gitlab-ci.yml",
+        "**/gradle/**",
+        "**/project.properties",
+        "**/gradle.properties"
       ]
     },
     "shell": {
       "allowedCommands": [
         "^git status$",
-        "^git diff( --[a-z-]*)? [a-zA-Z0-9._/-]*$",
-        "^git log( --[a-z-]*)? ?[a-zA-Z0-9._/-]*$",
-        "^git show [a-zA-Z0-9._/-]*$",
-        "^git grep [a-zA-Z0-9 _.-]+ -- [a-zA-Z0-9/_.*-]+$",
-        "^./gradlew test --tests [a-zA-Z0-9._*#]+$",
-        "^./gradlew clean$"
+        "^git diff( --[a-z-]+)?( [a-zA-Z0-9._/][a-zA-Z0-9._/-]*)?$",
+        "^git log( --[a-z-]+)?( [a-zA-Z0-9._/][a-zA-Z0-9._/-]*)?$",
+        "^git show [a-zA-Z0-9._/][a-zA-Z0-9._/-]*$",
+        "^git grep [a-zA-Z0-9][a-zA-Z0-9 _.-]* -- [a-zA-Z0-9._/][a-zA-Z0-9/_.*-]*$",
+        "^[.]/gradlew test --tests [a-zA-Z0-9._][a-zA-Z0-9._$#]+$",
+        "^[.]/gradlew clean$"
       ],
       "deniedCommands": [
         "git commit.*",
@@ -79,7 +85,6 @@
     "file://src/main/kotlin/com/appium/reusables/**/*.kt",
     "file://src/test/kotlin/com/appium/tests/**/*.kt",
     "file://src/test/resources/ValidationData.json",
-    "file://src/test/resources/TestData.json",
     "file://src/test/resources/testng.xml",
     "skill://.kiro/skills/**/SKILL.md"
   ],

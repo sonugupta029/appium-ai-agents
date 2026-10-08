@@ -2,7 +2,7 @@
   "name": "appium-debug-helper",
   "description": "Analyzes Appium test logs and HTML reports to diagnose failures — identifies changed element IDs, stale locators, timing issues, and app changes — then proposes fixes to screen files for your approval.",
   "prompt": "file://../agent-prompts/appium-debug-helper/appium-debug-helper-prompt.md",
-  "includeMcpJson": true,
+  "includeMcpJson": false,
   "tools": [
     "read",
     "glob",
@@ -11,9 +11,7 @@
     "shell",
     "code",
     "todo",
-    "introspect",
-    "mcp",
-    "@atlassian"
+    "introspect"
   ],
   "allowedTools": [
     "read",
@@ -44,18 +42,19 @@
         "**/.env.*",
         "**/*.pem",
         "**/*.key",
-        "**/project.properties"
+        "**/project.properties",
+        "**/TestData.json",
+        "**/ValidationData.json"
       ]
     },
     "shell": {
       "allowedCommands": [
         "^git status$",
-        "^git diff( --[a-z-]*)? [a-zA-Z0-9._/-]*$",
-        "^git log( --[a-z-]*)? ?[a-zA-Z0-9._/-]*$",
-        "^git show [a-zA-Z0-9._/-]*$",
-        "^git grep [a-zA-Z0-9 _.-]+ -- [a-zA-Z0-9/_.*-]+$",
-        "^ls( -[a-zA-Z]+)? [a-zA-Z0-9/_.*-]*$",
-        "^find [a-zA-Z0-9/_.*-]+ -name [a-zA-Z0-9_.*-]+$"
+        "^git diff( --[a-z-]+)?( [a-zA-Z0-9._/][a-zA-Z0-9._/-]*)?$",
+        "^git log( --[a-z-]+)?( [a-zA-Z0-9._/][a-zA-Z0-9._/-]*)?$",
+        "^git show [a-zA-Z0-9._/][a-zA-Z0-9._/-]*$",
+        "^git grep [a-zA-Z0-9][a-zA-Z0-9 _.-]* -- [a-zA-Z0-9._/][a-zA-Z0-9/_.*-]*$",
+        "^ls( -[a-zA-Z]+)? [a-zA-Z0-9._/][a-zA-Z0-9/_.*-]*$"
       ],
       "deniedCommands": [
         "git commit.*",
@@ -74,7 +73,6 @@
   },
   "resources": [
     "file://README.md",
-    "file://.kiro/steering/**/*.md",
     "file://src/main/kotlin/com/appium/screens/**/*.kt",
     "file://src/main/kotlin/com/appium/reusables/**/*.kt"
   ],

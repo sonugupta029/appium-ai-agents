@@ -1,13 +1,13 @@
 # Appium AI Agents for Kiro CLI
 
-Two production-ready AI agents for mobile test automation, built for the [Kiro CLI](https://kiro.dev).
+A reference implementation of two AI agents for mobile test automation, built for the [Kiro CLI](https://kiro.dev).
 
 ---
 
 ## Agents
 
 ### 🔍 appium-debug-helper
-Diagnoses Appium test failures by analyzing logs, HTML reports, and screenshots. Uses a **gated two-phase workflow** — the agent always presents findings and waits for your confirmation before touching any file.
+Diagnoses Appium test failures by analyzing logs, HTML reports, and screenshots. Uses a **gated two-phase workflow** — the agent always presents findings with cited evidence and waits for your confirmation before touching any file.
 
 **What it handles:**
 - Changed element IDs (XML layout → Jetpack Compose migrations)
@@ -56,7 +56,7 @@ Generates Kotlin/Appium Page Object Models (POMs), TestNG test scripts, and reus
 
 1. Clone this repo:
    ```bash
-   git clone https://github.com/YOUR_USERNAME/appium-ai-agents.git
+   git clone https://github.com/sonugupta029/appium-ai-agents.git
    ```
 
 2. Copy the `.kiro` folder into your mobile automation project root:
@@ -67,7 +67,7 @@ Generates Kotlin/Appium Page Object Models (POMs), TestNG test scripts, and reus
 3. Open your project with Kiro CLI:
    ```bash
    cd /path/to/your/project
-   kiro chat
+   kiro-cli chat
    ```
 
 4. Switch to an agent:
@@ -81,7 +81,7 @@ Generates Kotlin/Appium Page Object Models (POMs), TestNG test scripts, and reus
 
 ### Adapt to Your Project
 
-Update the `resources` paths in each agent JSON to point to your actual source directories. Update `Util.appPackage` in the POM template to match your app's package name.
+Update the `resources` paths in each agent JSON to point to your actual source directories. Update `Util.appPackage` in the POM template to match your app's package name. Set your Jira project key and bug link type in `skills/senior-test-engineer/SKILL.md`.
 
 ---
 
@@ -101,7 +101,7 @@ Update the `resources` paths in each agent JSON to point to your actual source d
 │
 └── skills/
     └── senior-test-engineer/
-        └── SKILL.md                      ← reusable skill loaded at runtime
+        └── SKILL.md                      ← Jira ticket creation skill (automation agent only)
 ```
 
 ---
@@ -109,31 +109,32 @@ Update the `resources` paths in each agent JSON to point to your actual source d
 ## Key Design Decisions
 
 ### Gated two-phase workflow (debug agent)
-The debug agent **always stops after Phase 1** and presents its analysis before making any changes. This prevents silent fixes — you always see what it found and why before it touches a file.
+The debug agent always stops after Phase 1 and presents its analysis — with cited evidence — before proposing any change. You see what it found, where it found it, and why before anything is written.
 
 ### `tools` vs `allowedTools` split
 Every agent JSON declares two tool lists:
-- `tools` — everything the agent can see
+- `tools` — everything the agent is aware of
 - `allowedTools` — what runs without asking for user approval
 
-`write` and `shell` are in `tools` but NOT in `allowedTools`. This means file edits and shell commands always require explicit confirmation.
+Both agents auto-approve only: `read`, `glob`, `grep`, `code`, `todo`, `introspect`. Everything else — `write`, `shell`, and all MCP tools — requires explicit confirmation. The debug agent has no MCP tools at all (`includeMcpJson: false`).
 
-### Path and command allowlisting
-`toolsSettings` restricts what the agent can read, write, and execute:
-- Write access: only `src/**` directories — never `.git`, settings, or secrets
-- Shell: only read-only git commands and gradle test commands — no commits, pushes, or destructive ops
+### `deniedPaths` instead of `allowedPaths`
+Write access is controlled via a denylist rather than an allowlist. `allowedPaths` can auto-approve matching writes in some tool implementations even when `write` is not in `allowedTools`. A denylist with `.kiro/**` blocked means the agent cannot overwrite its own config via the write tool. Note: shell commands approved by the user are not subject to `write.deniedPaths` — the denylist only applies to the write tool.
 
-### Skills as composable context
-Skills (`SKILL.md` files) are loaded into agent context at runtime via `skill://` resource references. This keeps reusable knowledge (debugging patterns, review checklists) separate from the agent prompt and shareable across agents without duplication.
+### Anchored shell commands
+Shell `allowedCommands` use anchored regex patterns (`^...$`) rather than loose wildcards. `cat`, `head`, `tail`, and `find` are absent — file reading uses the dedicated `read` and `glob` tools instead, which respect `read.deniedPaths`.
+
+### Skills loaded selectively
+The `senior-test-engineer` skill (Jira ticket creation) is loaded only into the automation agent. The debug agent has no Jira workflow and does not load it.
 
 ---
 
 ## Architecture
 
-See [docs/architecture.md](docs/architecture.md) for a detailed breakdown of how the agents are structured and how they interact with the codebase.
+See [docs/architecture.md](docs/architecture.md) for a detailed breakdown of the agent configs, tool access controls, and runtime data flow.
 
 ---
 
 ## License
 
-MIT
+Apache 2.0

@@ -12,10 +12,16 @@ Accept natural language → infer all fields → search duplicates → preview �
 Adapt these to your project before use:
 
 ```
-Project Key:     YOUR_PROJECT_KEY         (e.g. MOBILE, APP, QA)
-Jira Cloud URL:  your-org.atlassian.net
-Default Assignee (Stories): <account-id-of-qa-lead>
+Project Key:          YOUR_PROJECT_KEY         (e.g. MOBILE, APP, QA)
+Jira Cloud URL:       your-org.atlassian.net
+Default Assignee:     <account-id-of-qa-lead>
+Bug Link Type:        Bonfire testing           (the Jira issue link type used to link bugs
+                                                 to the QA story they were found in.
+                                                 Change to your org's link type name, e.g.
+                                                 "Testing", "Found in", "Discovered during")
 ```
+
+> The `Bug Link Type` value is used in `createIssueLink` calls. In Jira, link types are case-sensitive. Verify the exact name in your Jira instance under Settings → Issue linking before using this skill.
 
 ---
 
@@ -155,7 +161,9 @@ Automation
 When a bug is found while testing a QA story:
 1. Find the **QA story being tested** in the current sprint (search by keyword + in-progress status)
 2. Set bug's **epic link** = QA story's epic
-3. Create a **"Bonfire testing"** link: bug → QA story (inward: Testing discovered, outward: Discovered while testing)
+3. Create a link using the configured **Bug Link Type** (see Project Config above):
+   - inward: QA story (Testing discovered)
+   - outward: bug (Discovered while testing)
 4. Find the **dev story** that implemented the area (search by epic + summary keywords, paginate if needed)
 5. Set **assignee** = dev story's assignee (never assign bugs to QA)
 6. Override any of the above if user specifies explicitly
