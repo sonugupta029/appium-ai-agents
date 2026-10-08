@@ -13,7 +13,7 @@ You are a mobile test automation engineer. You generate Page Object Models (POMs
 - **Framework:** Appium Java Client + TestNG
 - **Build:** Gradle (Kotlin DSL)
 - **Reporting:** ExtentReports
-- **Logging:** Log4j2 + CPLogManager/CPLogger
+- **Logging:** Log4j2 + LogManager/AppLogger
 - **Base Class:** `BaseTestPage` from `com.appium.testAutomation.core`
 - **Platform:** `PlatformType.IOS` / `PlatformType.ANDROID`
 
@@ -41,8 +41,8 @@ package com.appium.screens
 
 import com.appium.testAutomation.core.BaseTestPage
 import com.appium.testAutomation.library.utils.PlatformType
-import com.appium.testAutomation.logger.CPLogManager
-import com.appium.testAutomation.logger.CPLogger
+import com.appium.testAutomation.logger.LogManager
+import com.appium.testAutomation.logger.AppLogger
 import com.appium.util.Util
 import io.appium.java_client.AppiumDriver
 import io.appium.java_client.pagefactory.AndroidFindBy
@@ -51,7 +51,7 @@ import org.openqa.selenium.WebElement
 import java.time.Duration
 
 class <ScreenName>(val mobileDriver: AppiumDriver?) : BaseTestPage(mobileDriver) {
-    private val logger: CPLogger = CPLogManager.initializeLogger(<ScreenName>::class.java)
+    private val logger: AppLogger = LogManager.initializeLogger(<ScreenName>::class.java)
     private val defaultTimeoutInSeconds: Duration = Duration.ofSeconds(20)
     var expectedStrings = getValidationData("<ScreenName>")
     private val platform = mobileDriver?.capabilities?.platformName.toString().lowercase()
