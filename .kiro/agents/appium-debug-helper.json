@@ -1,6 +1,6 @@
 {
   "name": "appium-debug-helper",
-  "description": "Analyzes Appium test logs and HTML reports to diagnose failures — identifies changed element IDs, stale locators, timing issues, and app changes — then fixes the affected screen files.",
+  "description": "Analyzes Appium test logs and HTML reports to diagnose failures — identifies changed element IDs, stale locators, timing issues, and app changes — then proposes fixes to screen files for your approval.",
   "prompt": "file://../agent-prompts/appium-debug-helper/appium-debug-helper-prompt.md",
   "includeMcpJson": true,
   "tools": [
@@ -21,52 +21,62 @@
     "grep",
     "code",
     "todo",
-    "introspect",
-    "mcp",
-    "@atlassian"
+    "introspect"
   ],
   "toolsSettings": {
+    "read": {
+      "deniedPaths": [
+        "**/.env",
+        "**/.env.*",
+        "**/*.pem",
+        "**/*.key",
+        "**/id_rsa*",
+        "**/*credentials*",
+        "~/.ssh/**",
+        "~/.aws/**"
+      ]
+    },
     "write": {
-      "allowedPaths": [
-        "src/main/kotlin/**",
-        "src/test/kotlin/**",
-        "src/test/resources/**",
-        "src/main/resources/**"
-      ],
       "deniedPaths": [
         ".git/**",
-        ".kiro/agents/**",
-        ".kiro/settings/**"
+        ".kiro/**",
+        "**/.env",
+        "**/.env.*",
+        "**/*.pem",
+        "**/*.key",
+        "**/project.properties"
       ]
     },
     "shell": {
       "allowedCommands": [
-        "git status",
-        "git diff.*",
-        "git log.*",
-        "git show.*",
-        "git grep.*",
-        "ls.*",
-        "find.*",
-        "cat.*",
-        "head.*",
-        "tail.*"
+        "^git status$",
+        "^git diff( --[a-z-]*)? [a-zA-Z0-9._/-]*$",
+        "^git log( --[a-z-]*)? ?[a-zA-Z0-9._/-]*$",
+        "^git show [a-zA-Z0-9._/-]*$",
+        "^git grep [a-zA-Z0-9 _.-]+ -- [a-zA-Z0-9/_.*-]+$",
+        "^ls( -[a-zA-Z]+)? [a-zA-Z0-9/_.*-]*$",
+        "^find [a-zA-Z0-9/_.*-]+ -name [a-zA-Z0-9_.*-]+$"
       ],
       "deniedCommands": [
         "git commit.*",
         "git push.*",
-        "git reset --hard.*",
-        "git clean -fd.*",
-        "rm -rf.*"
+        "git reset.*",
+        "git clean.*",
+        "rm.*",
+        "mv.*",
+        "cp.*",
+        "chmod.*",
+        "curl.*",
+        "wget.*"
       ],
-      "autoAllowReadonly": true
+      "autoAllowReadonly": false
     }
   },
   "resources": [
     "file://README.md",
     "file://.kiro/steering/**/*.md",
-    "file://src/**/*.kt",
-    "skill://.kiro/skills/**/SKILL.md"
+    "file://src/main/kotlin/com/appium/screens/**/*.kt",
+    "file://src/main/kotlin/com/appium/reusables/**/*.kt"
   ],
-  "welcomeMessage": "Appium Debug Helper ready. Share the test report, log file path, or paste the error — I'll find the broken locators, changed IDs, or timing issues and fix the screen files."
+  "welcomeMessage": "Appium Debug Helper ready. Share the test report, log file path, or paste the error — I'll analyze the failure and propose a fix for your approval."
 }

@@ -23,18 +23,10 @@
     "grep",
     "code",
     "todo",
-    "introspect",
-    "mcp",
-    "@atlassian",
-    "@gitlab",
-    "@Figma"
+    "introspect"
   ],
   "toolsSettings": {
     "read": {
-      "allowedPaths": [
-        ".kiro/**",
-        "**/*"
-      ],
       "deniedPaths": [
         "**/.env",
         "**/.env.*",
@@ -47,18 +39,9 @@
       ]
     },
     "write": {
-      "allowedPaths": [
-        "**/screens/**/*.kt",
-        "**/reusables/**/*.kt",
-        "**/tests/**/*.kt",
-        "**/resources/*.xml",
-        "**/resources/*.json",
-        ".kiro/agents/mobile-automation-engineer.json",
-        ".kiro/agent-prompts/mobile-automation-engineer/**"
-      ],
       "deniedPaths": [
         ".git/**",
-        ".kiro/settings/**",
+        ".kiro/**",
         "**/.env",
         "**/.env.*",
         "**/*.pem",
@@ -67,21 +50,26 @@
     },
     "shell": {
       "allowedCommands": [
-        "git status",
-        "git diff.*",
-        "git log.*",
-        "git show.*",
-        "git grep.*",
-        "./gradlew test.*",
-        "./gradlew clean.*"
+        "^git status$",
+        "^git diff( --[a-z-]*)? [a-zA-Z0-9._/-]*$",
+        "^git log( --[a-z-]*)? ?[a-zA-Z0-9._/-]*$",
+        "^git show [a-zA-Z0-9._/-]*$",
+        "^git grep [a-zA-Z0-9 _.-]+ -- [a-zA-Z0-9/_.*-]+$",
+        "^./gradlew test --tests [a-zA-Z0-9._*#]+$",
+        "^./gradlew clean$"
       ],
       "deniedCommands": [
         "git commit.*",
         "git push.*",
-        "git reset --hard.*",
-        "rm -rf.*"
+        "git reset.*",
+        "git clean.*",
+        "rm.*",
+        "mv.*",
+        "chmod.*",
+        "curl.*",
+        "wget.*"
       ],
-      "autoAllowReadonly": true
+      "autoAllowReadonly": false
     }
   },
   "resources": [
@@ -89,7 +77,9 @@
     "file://build.gradle.kts",
     "file://src/main/kotlin/com/appium/screens/**/*.kt",
     "file://src/main/kotlin/com/appium/reusables/**/*.kt",
+    "file://src/test/kotlin/com/appium/tests/**/*.kt",
     "file://src/test/resources/ValidationData.json",
+    "file://src/test/resources/TestData.json",
     "file://src/test/resources/testng.xml",
     "skill://.kiro/skills/**/SKILL.md"
   ],
